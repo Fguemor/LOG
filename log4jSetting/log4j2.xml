@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn"><!-- nivel minimo para trazar es warn -->
+	<Properties>
+		<Property name="basePath">/home/usuario/Desktop/DUAL</Property><!-- poniendole el dolar lo conviero en una variable luego, ruta sitio donde van los ficheros -->
+	</Properties>
+
+	<Appenders>
+		<RollingFile name="fileLogger"
+			fileName="${basePath}/app.log"
+			filePattern="${basePath}/app-%d{yyyy-MM-dd}.log"><!-- le damos un nombre, se ha definido con atributo  -->
+			<PatternLayout>
+				<pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n
+				</pattern><!-- patron para lo que se escribe -->
+			</PatternLayout>
+			<Policies><!--reglas para el rolling  -->
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<SizeBasedTriggeringPolicy size="1KB" />
+			</Policies>
+			<!-- cada dia se crearán como máximo 10 ficheros -->
+			<DefaultRolloverStrategy max="10">
+				<Delete basePath="${basePathr}" maxDepth="10">
+					<!-- borra todos los archivos antiguos de 30 días -->
+					<IfLastModified age="30d" />
+				</Delete>
+			</DefaultRolloverStrategy>
+		</RollingFile>
+	</Appenders>
+	<Loggers><!-- permite el nivel info, que no lo añada  -->
+		<Root level="info" additivity="false">
+			<appender-ref ref="fileLogger" />
+		</Root>
+	</Loggers>
+</Configuration>
